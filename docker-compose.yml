@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+  auth-postgres:
+    image: postgres:15
+    container_name: auth-postgres
+    environment:
+      POSTGRES_DB: authdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - auth-postgres-data:/var/lib/postgresql/data
+
+volumes:
+  auth-postgres-data:
+
+#   auth-service:
+#     build: .
+#     container_name: auth-service
+#     depends_on:
+#       - auth-postgres
+#     ports:
+#       - "8080:8080"
+#     environment:
+#       SPRING_DATASOURCE_URL: jdbc:postgresql://auth-postgres:5432/authdb
+#       SPRING_DATASOURCE_USERNAME: postgres
+#       SPRING_DATASOURCE_PASSWORD: postgres
+#       SPRING_JPA_HIBERNATE_DDL_AUTO: update # ou validate, mas update cria tabelas automaticamente
+
+# volumes:
+#   auth-postgres-data:
+
+  

@@ -9,8 +9,9 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users") // 👈 ADICIONE ISSO
-
+@Table(name = "users", uniqueConstraints = {
+    @UniqueConstraint(columnNames = "username")
+})
 public class User {
 
     @Id
@@ -19,4 +20,7 @@ public class User {
 
     private String username;
     private String password;
+
+    private String endereco; // Novo campo para endereço
+
 }

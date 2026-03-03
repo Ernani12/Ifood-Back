@@ -1,47 +1,45 @@
-// AuthController.java
-package com.example.auth_service.adapters.controller;
+    // AuthController.java
+    package com.example.auth_service.adapters.controller;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.http.ResponseEntity;
+    import lombok.RequiredArgsConstructor;
+    import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import com.example.auth_service.application.AuthService;
+    import com.example.auth_service.domain.model.User;
 
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 
-import com.example.auth_service.domain.model.User;
 
-@RestController
-@RequestMapping("/auth")
-@RequiredArgsConstructor
-public class AuthController {
+    @RestController
+    @RequestMapping("/auth")
+    @RequiredArgsConstructor
+    public class AuthController {
 
-    private final AuthenticationManager authManager;
+        @Autowired
+        private AuthService authService;
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User user) {
+       
+
+        @PostMapping("/login")
+        public ResponseEntity<String> login(@RequestBody User user) {
+            // Apenas delega para o service
+            return authService.login(user.getUsername(), user.getPassword());
+        }
+
+        @GetMapping("/test")
+        public String test() {
+            return "Auth funcionando!";
+        }
+
+
+        @PostMapping("/register")
+        public ResponseEntity<String> register(@RequestBody User user) {
         try {
-            Authentication auth = authManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
-            );
-
-            if (auth.isAuthenticated()) {
-                return ResponseEntity.ok("Login realizado com sucesso!");
-            } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body("Usuário ou senha inválidos!");
-            }
-
-        } catch (AuthenticationException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("Usuário ou senha inválidos!");
+            authService.register(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Usuário registrado com sucesso!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao registrar usuário: " + e.getMessage());
         }
     }
-
-    @GetMapping("/test")
-    public String test() {
-        return "Auth funcionando!";
     }
-}
