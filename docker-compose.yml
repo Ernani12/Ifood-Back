@@ -15,20 +15,20 @@ services:
 volumes:
   auth-postgres-data:
 
-#   auth-service:
-#     build: .
-#     container_name: auth-service
-#     depends_on:
-#       - auth-postgres
-#     ports:
-#       - "8080:8080"
-#     environment:
-#       SPRING_DATASOURCE_URL: jdbc:postgresql://auth-postgres:5432/authdb
-#       SPRING_DATASOURCE_USERNAME: postgres
-#       SPRING_DATASOURCE_PASSWORD: postgres
-#       SPRING_JPA_HIBERNATE_DDL_AUTO: update # ou validate, mas update cria tabelas automaticamente
+   auth-service:
+     build: .
+     container_name: auth-service
+     depends_on:
+       - auth-postgres
+     ports:
+       - "8080:8080"
+     environment:
+       SPRING_DATASOURCE_URL: jdbc:postgresql://auth-postgres:5432/authdb
+       SPRING_DATASOURCE_USERNAME: postgres
+       SPRING_DATASOURCE_PASSWORD: postgres
+       SPRING_JPA_HIBERNATE_DDL_AUTO: update 
 
-# volumes:
-#   auth-postgres-data:
+volumes:
+  auth-postgres-data:
 
   
